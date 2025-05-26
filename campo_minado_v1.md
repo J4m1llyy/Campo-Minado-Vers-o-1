@@ -1,8 +1,22 @@
-# Importações
 import random
 from colorama import Fore, Back
 
-# Construindo
+
+class Jogo():
+    def definir_dificuldade(self):
+        print('Proporções\nFácil - | 10 X 10 |\nMédio - | 18 X 18 |\nDifícil - | 24 X 24 |')
+        while True:
+            self.tamanho = input('Escolha uma proporção (F/M/D):').upper()
+            if self.tamanho != 'F' and self.tamanho != 'M' and self.tamanho != 'D':
+                print('Selecione uma opção disponível.')
+                continue
+            elif self.tamanho == "F":
+                return CampoFacil()
+            elif self.tamanho == "M":
+                return CampoMedio()
+            elif self.tamanho == "D":
+                return CampoDificil()
+
 class Campo():
     def __init__(self):
         self.campo = []
@@ -13,15 +27,7 @@ class Campo():
         self.coluna = ''
         self.ferramenta = ''
         self.vezes = 0
-
-    def definir_dificuldade(self):
-        print('Proporções\nFácil - | 10 X 10 |\nMédio - | 18 X 18 |\nDifícil - | 24 X 24 |')
-        while True:
-            self.tamanho = input('Escolha uma proporção (F/M/D):').upper()
-            if self.tamanho != 'F' and self.tamanho != 'M' and self.tamanho != 'D':
-                print('Selecione uma opção disponível.')
-                continue
-            break
+        self.proporcao = 0
 
     def cria_proporcao_do_campo(self):
         if self.tamanho == 'F':
@@ -56,7 +62,8 @@ class Campo():
                 self.ferramenta = input('Digite qual ferramenta quer utilizar(P/B): ').upper()
                 if self.ferramenta != 'P' or self.ferramenta != 'B':
                     print('Digite uma ferramenta válida.')
-        while self.coluna not in self.alfabeto[0:len(self.campo[0])]:
+       
+        while self.coluna not in self.alfabeto:
             self.coluna = input('Digite a coluna: ').upper()
             if self.coluna not in self.alfabeto[0:len(self.campo[0])]:
                 print('Digite uma coluna válida.')
@@ -67,128 +74,9 @@ class Campo():
                     print('Digite uma linha válida.')
             except ValueError:
                 print('Digite uma linha válida.')
-
-    def campo_versao_inicial_dificil(self):
-        # Canto inferior esquerda 
-        if (self.linha == 23 or self.linha == 22 or self.linha == 21 or self.linha == 20) and (self.coluna == 0 or self.coluna == 1 or self.coluna == 2 or self.coluna == 3):
-            for i in range(self.linha-4, self.linha+1):
-                for j in range(5):
-                    self.campo[i][j] = '0'
-        # Canto inferior direita
-        elif (self.linha == 23 or self.linha == 22 or self.linha == 21 or self.linha == 20) and (self.coluna == 23 or self.coluna == 22 or self.coluna == 21 or self.coluna == 20):
-            for i in range(self.linha-4, self.linha+1):
-                for j in range(self.coluna-4, self.coluna+1):
-                    self.campo[i][j] = '0'
-        # Canto superior esquerda
-        elif self.coluna == 0:
-            for i in range(self.linha, self.linha+5):
-                for j in range(5):
-                    self.campo[i][j] = '0'
-        # Canto superior direita
-        elif self.coluna == 23 or self.coluna == 22 or self.coluna == 21:
-            for i in range(self.linha, self.linha+5):
-                for j in range(self.coluna-4, self.coluna+1):
-                    self.campo[i][j] = '0'
-        # Borda superior
-        elif self.linha == 0 and self.coluna != 0 and self.coluna != 23:
-            for i in range(self.linha, self.linha+5):
-                for j in range(self.coluna-1, self.coluna+4):
-                    self.campo[i][j] = '0'
-        # Borda inferior
-        elif self.linha == 23 and self.coluna != 0 and self.coluna != 23:
-            for i in range(self.linha-4, self.linha+1):
-                for j in range(self.coluna-1, self.coluna+4):
-                    self.campo[i][j] = '0'
-        # No meio
-        else:
-            for i in range(self.linha-1, self.linha+4):
-                for j in range(self.coluna-1, self.coluna+4):
-                    self.campo[i][j] = '0'
-
-    def campo_versao_inicial_medio(self):
-        # Canto inferior esquerda
-        if (self.linha == 17 or self.linha == 16 or self.linha == 15) and (self.coluna == 0 or self.coluna == 1 or self.coluna == 2):
-            for i in range(self.linha-3, self.linha+1):
-                for j in range(4):
-                    self.campo[i][j] = '0'
-        # Canto inferior direita
-        elif (self.linha == 17 or self.linha == 16 or self.linha == 15) and (self.coluna == 17 or self.coluna == 16 or self.coluna == 15):
-            for i in range(self.linha-3, self.linha+1):
-                for j in range(self.coluna-3, self.coluna+1):
-                    self.campo[i][j] = '0'
-        # Canto superior esquerda
-        elif self.coluna == 0:
-            for i in range(self.linha, self.linha+4):
-                for j in range(4):
-                    self.campo[i][j] = '0'
-        # Canto superior direita
-        elif self.coluna == 17 or self.coluna == 16 or self.coluna == 15:
-            for i in range(self.linha, self.linha+4):
-                for j in range(self.coluna-3, self.coluna+1):
-                    self.campo[i][j] = '0'
-        # Borda superior
-        elif self.linha == 0 and self.coluna != 0 and self.coluna != 17:
-            for i in range(self.linha, self.linha+4):
-                for j in range(self.coluna-1, self.coluna+3):
-                    self.campo[i][j] = '0'
-        # Borda superior
-        elif self.linha == 17 and self.coluna != 0 and self.coluna != 17:
-            for i in range(self.linha-3, self.linha+1):
-                for j in range(self.coluna-1, self.coluna+3):
-                    self.campo[i][j] = '0'
-        # No meio
-        else:
-            for i in range(self.linha-1, self.linha+3):
-                for j in range(self.coluna-1, self.coluna+3):
-                    self.campo[i][j] = '0'
-
-    def campo_versao_inicial_facil(self):
-        # Canto inferior esquerda
-        if (self.linha == 9 or self.linha == 8) and (self.coluna == 0 or self.coluna == 1):
-            for i in range(self.linha-3, self.linha+1):
-                for j in range(4):
-                    self.campo[i][j] = '0'
-        # Canto inferior direita
-        elif (self.linha == 9 or self.linha == 8) and (self.coluna == 9 or self.coluna == 8):
-            for i in range(self.linha-3, self.linha+1):
-                for j in range(self.coluna-3, self.coluna+1):
-                    self.campo[i][j] = '0'
-        # Canto superior esquerda
-        if self.coluna == 0:
-            for i in range(self.linha, self.linha+3):
-                for j in range(3):
-                    self.campo[i][j] = '0'
-        # Canto superior direita
-        elif self.coluna == 9 or self.coluna == 8:
-            for i in range(self.linha, self.linha+3):
-                for j in range(self.coluna-2, self.coluna+1):
-                    self.campo[i][j] = '0'
-        # Borda superior
-        elif self.linha == 0 and self.coluna != 0 and self.coluna != 9:
-            for i in range(self.linha, self.linha+3):
-                for j in range(self.coluna-1, self.coluna+2):
-                    self.campo[i][j] = '0'
-        # Borda inferior
-        elif self.linha == 9 and self.coluna != 0 and self.coluna != 9:
-            for i in range(self.linha-2, self.linha+1):
-                for j in range(self.coluna-1, self.coluna+2):
-                    self.campo[i][j] = '0'
-        # No meio
-        else:
-            for i in range(self.linha-1, self.linha+2):
-                for j in range(self.coluna-1, self.coluna+2):
-                    self.campo[i][j] = '0'
-
-    def campo_versao_inicial(self):
         self.coluna = self.alfabeto.index(self.coluna)
         self.linha -= 1
-        if self.tamanho == 'F':
-            self.campo_versao_inicial_facil()
-        if self.tamanho == 'M':
-            self.campo_versao_inicial_medio()
-        if self.tamanho == 'D':
-            self.campo_versao_inicial_dificil()
-          
+
     def efeito_cascata(self):
         # Lista de posições a serem verificadas
         fila = [(self.linha, self.coluna)]
@@ -205,7 +93,7 @@ class Campo():
                         if 0 <= nl < self.proporcao and 0 <= nc < self.proporcao:
                             if self.campo[nl][nc] == ' ':
                                 fila.append((nl, nc))
-
+                                
     def identificador_de_bombas(self):
         for i in range(self.proporcao):
             for j in range(self.proporcao):
@@ -240,15 +128,15 @@ class Campo():
             if self.campo[i][j] == ' ':
                 self.campo[i][j] = '*'
                 bombas_colocadas += 1
-    
-# Área para exibição
+
+    # Área para exibição
     def personalizacao_cores_campo_para_usuario(self):
         for i in range(self.proporcao):
             for j in range(self.proporcao):
                 # Cor de onde já foi cavado
                 if self.campo[i][j] == '0':
                     self.campo_para_usuario[i][j] = Back.YELLOW + '  ' + Back.RESET
-
+                    
     def exibir_campo_para_usuario(self):
         print('CAMPO PARA USUÁRIO')
         # Alfabeto para colunas
@@ -267,7 +155,7 @@ class Campo():
                     print(i[j],Fore.BLUE +  f'{n+1}' + Fore.RESET)
                 else:
                     print(i[j], end='')
-
+    
     def exibir_campo_oculto(self):
         print('CAMPO OCULTO')
         for i in range(len(self.campo)):
@@ -278,16 +166,144 @@ class Campo():
         for n, i in enumerate(self.campo):
             print(i, n+1)
 
-# Chamando funções
-campo = Campo()
-campo.definir_dificuldade()
+class CampoDificil(Campo):
+    
+    def __init__(self):
+        super().__init__()
+        
+    def campo_versao_inicial(self):
+        if self.tamanho == 'D':
+            # Canto inferior esquerda 
+            if (self.linha == 23 or self.linha == 22 or self.linha == 21 or self.linha == 20) and (self.coluna == 0 or self.coluna == 1 or self.coluna == 2 or self.coluna == 3):
+                for i in range(self.linha-4, self.linha+1):
+                    for j in range(5):
+                        self.campo[i][j] = '0'
+            # Canto inferior direita
+            elif (self.linha == 23 or self.linha == 22 or self.linha == 21 or self.linha == 20) and (self.coluna == 23 or self.coluna == 22 or self.coluna == 21 or self.coluna == 20):
+                for i in range(self.linha-4, self.linha+1):
+                    for j in range(self.coluna-4, self.coluna+1):
+                        self.campo[i][j] = '0'
+            # Canto superior esquerda
+            elif self.coluna == 0:
+                for i in range(self.linha, self.linha+5):
+                    for j in range(5):
+                        self.campo[i][j] = '0'
+            # Canto superior direita
+            elif self.coluna == 23 or self.coluna == 22 or self.coluna == 21:
+                for i in range(self.linha, self.linha+5):
+                    for j in range(self.coluna-4, self.coluna+1):
+                        self.campo[i][j] = '0'
+            # Borda superior
+            elif self.linha == 0 and self.coluna != 0 and self.coluna != 23:
+                for i in range(self.linha, self.linha+5):
+                    for j in range(self.coluna-1, self.coluna+4):
+                        self.campo[i][j] = '0'
+            # Borda inferior
+            elif self.linha == 23 and self.coluna != 0 and self.coluna != 23:
+                for i in range(self.linha-4, self.linha+1):
+                    for j in range(self.coluna-1, self.coluna+4):
+                        self.campo[i][j] = '0'
+            # No meio
+            else:
+                for i in range(self.linha-1, self.linha+4):
+                    for j in range(self.coluna-1, self.coluna+4):
+                        self.campo[i][j] = '0'
+
+class CampoMedio(Campo):
+    def __init__(self):
+        super().__init__()
+        
+    def campo_versao_inicial(self):
+        if self.tamanho == 'M':
+            # Canto inferior esquerda
+            if (self.linha == 17 or self.linha == 16 or self.linha == 15) and (self.coluna == 0 or self.coluna == 1 or self.coluna == 2):
+                for i in range(self.linha-3, self.linha+1):
+                    for j in range(4):
+                        self.campo[i][j] = '0'
+            # Canto inferior direita
+            elif (self.linha == 17 or self.linha == 16 or self.linha == 15) and (self.coluna == 17 or self.coluna == 16 or self.coluna == 15):
+                for i in range(self.linha-3, self.linha+1):
+                    for j in range(self.coluna-3, self.coluna+1):
+                        self.campo[i][j] = '0'
+            # Canto superior esquerda
+            elif self.coluna == 0:
+                for i in range(self.linha, self.linha+4):
+                    for j in range(4):
+                        self.campo[i][j] = '0'
+            # Canto superior direita
+            elif self.coluna == 17 or self.coluna == 16 or self.coluna == 15:
+                for i in range(self.linha, self.linha+4):
+                    for j in range(self.coluna-3, self.coluna+1):
+                        self.campo[i][j] = '0'
+            # Borda superior
+            elif self.linha == 0 and self.coluna != 0 and self.coluna != 17:
+                for i in range(self.linha, self.linha+4):
+                    for j in range(self.coluna-1, self.coluna+3):
+                        self.campo[i][j] = '0'
+            # Borda superior
+            elif self.linha == 17 and self.coluna != 0 and self.coluna != 17:
+                for i in range(self.linha-3, self.linha+1):
+                    for j in range(self.coluna-1, self.coluna+3):
+                        self.campo[i][j] = '0'
+            # No meio
+            else:
+                for i in range(self.linha-1, self.linha+3):
+                    for j in range(self.coluna-1, self.coluna+3):
+                        self.campo[i][j] = '0'
+
+class CampoFacil(Campo):
+    
+    def __init__(self):
+        super().__init__()
+        
+    def campo_versao_inicial(self):
+        # Canto inferior esquerda
+        if (self.linha == 9 or self.linha == 8) and (self.coluna == 0 or self.coluna == 1):
+            for i in range(self.linha-3, self.linha+1):
+                for j in range(4):
+                    self.campo[i][j] = '0'
+        # Canto inferior direita 
+        elif (self.linha == 9 or self.linha == 8) and (self.coluna == 9 or self.coluna == 8):
+            for i in range(self.linha-3, self.linha+1):
+                for j in range(self.coluna-3, self.coluna+1):
+                    self.campo[i][j] = '0'
+        # Canto superior esquerda
+        if self.coluna == 0:
+            for i in range(self.linha, self.linha+3):
+                for j in range(3):
+                    self.campo[i][j] = '0'
+        # Canto superior direita
+        elif self.coluna == 9 or self.coluna == 8:
+            for i in range(self.linha, self.linha+3):
+                for j in range(self.coluna-2, self.coluna+1):
+                    self.campo[i][j] = '0'
+        # Borda superior
+        elif self.linha == 0 and self.coluna != 0 and self.coluna != 9:
+            for i in range(self.linha, self.linha+3):
+                for j in range(self.coluna-1, self.coluna+2):
+                    self.campo[i][j] = '0'
+        # Borda inferior
+        elif self.linha == 9 and self.coluna != 0 and self.coluna != 9:
+            for i in range(self.linha-2, self.linha+1):
+                for j in range(self.coluna-1, self.coluna+2):
+                    self.campo[i][j] = '0'
+        # No meio
+        else:
+            for i in range(self.linha-1, self.linha+2):
+                for j in range(self.coluna-1, self.coluna+2):
+                    self.campo[i][j] = '0'
+
+#campo = Campo()
+#campo.definir_dificuldade()
+jogo = Jogo()
+campo = jogo.definir_dificuldade()
+print(campo)
 campo.cria_proporcao_do_campo()
 
 campo.exibir_campo_para_usuario()
 campo.exibir_campo_oculto()
   
 campo.solicitar_posicao()
-campo.campo_versao_inicial()
 
 campo.exibir_campo_para_usuario()
 campo.exibir_campo_oculto()
@@ -299,3 +315,4 @@ campo.efeito_cascata()
 campo.personalizacao_cores_campo_para_usuario()
 campo.exibir_campo_para_usuario()
 campo.exibir_campo_oculto()
+campo.campo_versao_inicial()
