@@ -1,6 +1,8 @@
+# Importações
 import random
 from colorama import Fore, Back
 
+# Construindo
 class Campo():
     def __init__(self):
         self.campo = []
@@ -276,6 +278,7 @@ class Campo():
         for n, i in enumerate(self.campo):
             print(i, n+1)
 
+# Chamando funções
 campo = Campo()
 campo.definir_dificuldade()
 campo.cria_proporcao_do_campo()
